@@ -22,6 +22,7 @@ export default class Register extends Component{
     state={
         userName:'',
         password:'',
+        email:'',
         confirm:'',
         isLoading:false
     }
@@ -44,6 +45,7 @@ export default class Register extends Component{
                 },
                 body:JSON.stringify({
                     username:this.state.userName,
+                    email:this.state.email,
                     password:this.state.password,
                     confirm:this.state.confirm
                 })
@@ -85,7 +87,14 @@ export default class Register extends Component{
                         userName:text
                     })}
                 >
-                    <Icon type="user" />
+                </InputItem>
+                <InputItem
+                    style={styles.input}
+                    placeholder="电子邮箱"
+                    onChangeText={text=>this.setState({
+                        email:text
+                    })}
+                >
                 </InputItem>
                 <InputItem
                     style={styles.input}

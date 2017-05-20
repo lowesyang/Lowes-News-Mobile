@@ -37,8 +37,9 @@ export default class Register extends Component{
             isLoading:true
         });
         try {
-            let response = await fetch('http://127.0.0.1:3000/register',{
+            let response = await fetch('https://news.zhelishi.cn/register',{
                 method:'POST',
+                mode:'cors',
                 headers:{
                     'Accept':'application/json',
                     'Content-Type':'application/json'

@@ -10,7 +10,8 @@ const dataList=new ListView.DataSource({
 
 const styles=StyleSheet.create({
     listView:{
-        width:'100%'
+        width:'100%',
+        height:'100%'
     }
 })
 
@@ -37,11 +38,12 @@ export default class NewsOfTypes extends Component{
      * @param {Bool} isExtra  true: 额外获取  false:替换整个列表
      */
     getNewsList=async (isExtra)=>{
+        if(this.state.isLoading) return;
         this.setState({
             isLoading:true
         });
         try{
-            let response=await fetch('http://127.0.0.1:3000/extra/news/'
+            let response=await fetch('https://news.zhelishi.cn/extra/news/'
                 +this.props.type+'?p='+this.state.page+'&pcount=20');
             let res=await response.json();
             if(!res.code) {
@@ -62,6 +64,7 @@ export default class NewsOfTypes extends Component{
             }
         }
         catch(e){
+            console.log(e)
             Toast.offline(e.toString())
         }
         this.setState({
@@ -71,19 +74,25 @@ export default class NewsOfTypes extends Component{
     onEndReached=()=>{
         this.getNewsList(true)
     }
+    refresh=()=>{
+        this.setState({
+            page:1
+        })
+        this.getNewsList();
+    }
     render(){
         const { navigate } = this.props.navigation;
         const item=(rowData,rowId)=> {
-            let imgPath=rowData.imgsrc || rowData.img;
+            let imgPath=rowData.img;
             imgPath=imgPath && imgPath.replace('http','https');
             return (<NewsItem
                 key={rowId}
                 title={rowData.title}
-                intro={rowData.digest || rowData.intro || rowData.title}
+                intro={rowData.intro || rowData.title}
                 source={rowData.source}
-                time={rowData.ptime || rowData.cdateTime || rowData.time}
+                time={rowData.time}
                 src={imgPath}
-                toDetail={()=>navigate('Detail',{url:rowData.url || rowData.link})}
+                toDetail={()=>navigate('Detail',{url:rowData.url})}
             />)
         };
         return(
@@ -91,17 +100,17 @@ export default class NewsOfTypes extends Component{
                 style={styles.listView}
                 refreshControl={
                     <RefreshControl
-                        onRefresh={this.getNewsList}
+                        onRefresh={this.refresh}
                         refreshing={this.state.isLoading}
                     />
                 }
                 dataSource={this.state.dataSource}
                 renderRow={item}
                 onEndReached={this.onEndReached}
-                onEndReachedThreshold={10}
+                onEndReachedThreshold={0}
                 enableEmptySections={true}
                 renderFooter={
-                ()=><Text style={{ padding:30,textAlign:'center' }}>
+                ()=><Text style={{ padding:10,textAlign:'center' }}>
                     {this.state.isLoading?"加载中...":"加载完毕"}
                 </Text>
             }

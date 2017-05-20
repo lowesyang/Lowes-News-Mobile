@@ -32,8 +32,9 @@ export default class Login extends Component{
             isLoading:true
         })
         try {
-            let response = await fetch('http://127.0.0.1:3000/login',{
+            let response = await fetch('https://news.zhelishi.cn/login',{
                 method:'POST',
+                mode:'cors',
                 headers:{
                     'Accept':'application/json',
                     'Content-Type':'application/json'

@@ -55,7 +55,11 @@ export default class NewsItem extends Component{
         toDetail:React.PropTypes.func
     }
     render(){
-        let imgPath=this.props.src?{uri:this.props.src}:require('../../../static/timg.jpeg');
+        let imgPath;
+        if(this.props.src.indexOf('noimg')>=0){
+            imgPath={uri:'https://news.zhelishi.cn'+this.props.src};
+        }
+        else imgPath={uri:this.props.src};
         return (
             <TouchableHighlight onPress={this.props.toDetail} activeOpacity={0.8}>
                 <View style={styles.item}>

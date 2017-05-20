@@ -30,7 +30,7 @@ export default class NewsOfTypes extends Component{
         };
     }
     componentWillMount(){
-        console.log(this.props.type)
+        //console.log(this.props.type)
         this.getNewsList(false);
     }
 
@@ -59,6 +59,7 @@ export default class NewsOfTypes extends Component{
                     this.setState({
                         newsList:res.body.news,
                         dataSource: dataList.cloneWithRows(res.body.news),
+                        page:this.state.page+1
                     })
                 }
             }
@@ -77,8 +78,9 @@ export default class NewsOfTypes extends Component{
     refresh=()=>{
         this.setState({
             page:1
-        })
-        this.getNewsList();
+        },()=>{
+            this.getNewsList();
+        });
     }
     render(){
         const { navigate } = this.props.navigation;

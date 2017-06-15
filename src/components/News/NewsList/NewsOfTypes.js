@@ -85,15 +85,13 @@ export default class NewsOfTypes extends Component{
     render(){
         const { navigate } = this.props.navigation;
         const item=(rowData,rowId)=> {
-            let imgPath=rowData.img;
-            imgPath=imgPath && imgPath.replace('http','https');
             return (<NewsItem
                 key={rowId}
                 title={rowData.title}
                 intro={rowData.intro || rowData.title}
                 source={rowData.source}
                 time={rowData.time}
-                src={imgPath}
+                src={rowData.img}
                 toDetail={()=>navigate('Detail',{url:rowData.url})}
             />)
         };
